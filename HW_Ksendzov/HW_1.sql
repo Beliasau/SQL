@@ -147,6 +147,11 @@ values
 (2400),
 (2500);
 
+insert into salary1(monthly_salary)
+values 
+(2600);
+
+select * from salary1;
 
 
 
