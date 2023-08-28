@@ -1,13 +1,6 @@
+--SQL_DDL
+--Первая часть.
 
-   		
-select * from roles_employee1;
-
-
-select role_title, monhtly_salary from roles_salary
-join salary on id_salary = salary.id
-join roles on id_role = roles.id;
-
---====================================================
 
 
 --Таблица employees
