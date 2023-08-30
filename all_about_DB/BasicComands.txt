@@ -1,0 +1,619 @@
+					Установка базы данных
+
+USE имя_базы_даных 		установит обьявленную базу данных в качестве используемой
+
+
+
+
+
+
+
+
+					Создание базы данных и таблиц
+
+
+CREATE DATABASE имя_базы_даных 
+пытается создать базу данных, но если такая база данных уже существует, то операция возвратит ошибку.
+
+CREATE DATABASE IF NOT EXISTS имя_базы_даных
+пытается создать базу данных, если на сервере отсутствует бд с таким именем.
+
+CREATE TABLE название_таблицы
+(
+ 	название_столбца1 тип_данных атрибуты_столбца1, 
+	 название_столбца2 тип_данных атрибуты_столбца2,
+	 ................................................
+ 	название_столбцаN тип_данных атрибуты_столбцаN,
+ 	атрибуты_уровня_таблицы
+);
+
+Атрибуты столбцов, а также атрибуты таблицы указывать необязательно
+
+
+пример
+CREATE TABLE users (
+  userId INT,
+  userName VARCHAR(20)  NOT NULL,
+  age INT           NOT NULL,
+  city VARCHAR(20),
+  status VARCHAR(8),
+  PRIMARY KEY (id)
+);
+
+
+
+
+
+
+
+
+
+					Атрибуты столбцов и таблиц
+
+
+PRIMARY KEY 		задает первичный ключ таблицы.
+
+AUTO_INCREMENT 
+позволяет указать, что значение столбца будет автоматически увеличиваться при добавлении новой строки. Данный атрибут работает для столбцов, которые представляют целочисленный тип или числа с плавающей точкой.
+
+UNIQUE			указывает, что столбец может хранить только уникальные значения.
+
+NULL или NOT NULL	атрибут указывает на то, может ли столбец принимать значения NULL 
+
+DEFAULT			определяет значение по умолчанию для столбца.
+
+CHECK 			задает ограничение для диапазона значений, которые могут храниться в 			столбце пример			
+				Age INT DEFAULT 18 CHECK(Age >0 AND Age < 100)
+
+AND			и    .для соединения условий
+
+CONSTRAINT 		Установка имени ограничений
+
+FOREIGN KEY 		указывается столбец таблицы, который будет представлять внешний ключ
+
+DESC имя_базы_даных 			посмотреть описание таблицы
+
+CREATE UNIQUE INDEX indexName		создание индекса
+ON tableName (col1, col2, ...colN);
+
+
+
+
+
+
+
+
+
+
+					Добавление и изменение информации
+
+
+INSERT INTO second_table		копирует данные из одной таблицы и вставляет
+SELECT * FROM first_table		их в другую, при этом типы данных в обеих таблицах 
+WHERE condition;			должны соответствовать.
+
+
+
+INSERT INTO tableName (col1, col2, ...colN)		Добавление колонок со значением
+VALUES (val1, val2, ...valN);
+
+ALTER TABLE tableName RENAME TO newTableName; 		переименование таблицы
+
+ALTER TABLE tableName ADD|DROP|MODIFY colName [datatype]; добавление/удаление/модификация 									колонок
+
+ALTER TABLE tableName ADD colName [datatype]	добавление в таблицу колонки после указанной
+AFTER|First|SECOND colName			либо первой|второй	
+
+UPDATE tableName
+SET col1 = val1, col2 = val2, ...colN = valN		обновление записи(там где col = val)
+WHERE col = val;
+
+пример					
+UPDATE Customers					обновит все записи в таблице в колонке City
+SET City = 'Oslo';
+
+ROLLBACK;						отмена изменений
+
+
+REPLACE INTO `genres`
+ (`g_id`,				добавить в базу данных жанры «Философия», «Детек-
+ `g_name`)				тив», «Классика».
+VALUES (NULL,
+ 'Философия'),
+ (NULL,
+ 'Детектив'),
+ (NULL,
+ 'Классика');
+оператор REPLACE, который работает аналогично IN￾SERT, но учитывает значения первичного ключа и уникальных индексов, добавляя 
+новую строку, если совпадений нет, и обновляя имеющуюся, если совпадение есть.
+NULL подается в ID, когда ID автоинкремент, поле заполняется автоматически
+
+
+
+
+
+
+
+
+
+
+					УДАЛЕНИЕ
+
+
+
+DROP TABLE tableName;				удаление таблицы
+
+DROP DATABASE [IF EXISTS] dbName;		удаление БД
+
+
+TRUNCATE TABLE tableName;			очистка таблицы
+
+ALTER TABLE tableName				удаление колонки из таблицы
+DROP COLUMN colName;
+
+DELETE FROM tableName				удаление определенной записи
+WHERE имя_поля=значение;
+
+DELETE FROM tableName;				удалит все значения из таблицы
+
+ALTER TABLE tableName				удаление индекса
+DROP INDEX indexName;
+
+DELETE(Медленнее, чем оператор TRUNCATE) используется для удаления одной или большего числа существующих таблиц.
+TRUNCATE удаляет все данные внутри таблицы.
+TRUNCATE не будет работать, если таблица содержит внешние ключи. В этом случае придется использовать DELETE.
+DROP удаляет саму таблицу, и нельзя сделать Rollback команды, тогда как команда TRUNCATE удаляет все строки из таблицы 
+
+
+
+
+
+
+
+
+					SELECT
+
+
+
+SELECT * FROM tableName			выборка всех полей
+
+SELECT col1, col2, ...colN		выводит указанные поля
+FROM tableName;
+
+SELECT DISTINCT colName			выводит все значения поля без дубликатов\
+FROM tableName							без повторений
+
+SELECT * FROM tableName			выводит нужное количество(10) строк из таблицы
+LIMIT 10
+
+псевдонимы
+SELECT  colName(действующее имя поля)
+AS colName1(псевдоним который назначаем)         назначение псевдонимов
+FROM tableName
+
+SELECT  colName, colName1, colName2
+AS colName1(псевдоним который назначаем)         назначаем псевдоним только для 1 колонки из 3 выбранных
+FROM tableName
+
+
+сравнение
+SELECT colName1, colName2, ...colNameN		выводит те значения из таблицы, которые 
+FROM tableName					попадают под условие
+WHERE colName(=, <=, >=, !=)valye;
+
+SELECT colName1, colName2, ...colNameN		выводит из таблицы колонны попадающие под
+FROM tableName					AND оба условия
+WHERE condition1 AND|OR condition2;		OR одно из
+
+
+обьединение логических функций
+SELECT colName1, colName2, ...colNameN		выводит из таблицы колонны попадающие под
+FROM tableName					условия
+WHERE (colName1>=value1 OR colName2=value2);		
+AND colName!=value
+
+
+поиск похожих значений
+SELECT colName1, colName2, ...colNameN		выведет поля в которых есть совпадение по 
+FROM tableName					тексту    
+WHERE colName
+LIKE __условие поиска__				'_d'  '%dcd'  'qw%'
+
+SELECT colName1, colName2, ...colNameN		выведет поля в которых нет совпадения в 
+FROM tableName					тексте    
+WHERE colName
+NOT LIKE __условие поиска__				'_d'  '%dcd'  'qw%'
+
+SELECT * FROM Customers				выведет все записи из таблицы Customers	
+WHERE City LIKE '[acs]%'			в которых первая буква в колонке города «a», «c» или «s»
+						[] - точеное совпадение
+
+SELECT * FROM Customers				выведет все записи из таблицы Customers
+WHERE City LIKE '[a-f]%'			в которых первая буква в колонке города в диапозоне от 
+						от a до f
+
+SELECT * FROM Customers				выведет все записи из таблицы Customers
+WHERE City LIKE '[!acf]%'			в которых первая буква в колонке города НЕ a,c либо f
+
+
+диапазоны
+SELECT colName1, colName2, ...colNameN		выведет поля, 
+FROM tableName					при совпадении значений   
+WHERE colName					в поле
+BETWEEN 50 AND 100				в диапозоне от 50 до 100
+
+SELECT colName1, colName2, ...colNameN		выведет поля, 
+FROM tableName					при совпадении значений   
+WHERE NOT colName					в поле
+BETWEEN 50 AND 100				вcе кроме диапозона от 50 до 100
+
+SELECT * FROM Products				либо так
+WHERE Price 
+NOT BETWEEN 10 AND 20
+
+поиск по точному совпадению
+SELECT colName1, colName2, ...colNameN		выведет поля, 
+FROM tableName					при точном совпадении значений  (7,9,15) 
+WHERE  colName	IN (7,9,15)				в поле
+				
+SELECT * FROM Customers				выведет из таблицы все записи кроме записей, содержащих
+WHERE Country NOT IN ('Norway', 'France')					Norway и France
+
+
+Явные операции соединения
+SELECT colName1, colName2			выведет поля, из двух таблиц
+FROM tableName1, tableName2				которые подходят под условие		 
+WHERE условие
+
+
+сортировка
+SELECT col1, col2, ...colN			выведет выбранные колонны
+FROM tableName					из таблицы
+ORDER BY colName 				отсортированные по порядку в этой колонне
+
+SELECT col1, col2, ...colN
+FROM tableName					отсортирует в обратном порядке(DESC)
+ORDER BY colName DESC
+
+SELECT col1, col2, ...colN
+FROM tableName					сортировка с условием
+WHERE condition(условия)
+ORDER BY colName [ASC|DESC];
+
+пример
+SELECT COUNT(CustomerID), Country		выведет общее количество записей в колонке CustomerID
+FROM Customers					и Country из таблицы Customers и сгрупирует по колонке
+GROUP BY Country;				Country, те укажет общее кол-во клиентов в каждой стране
+
+SELECT COUNT(CustomerID),Country		укажет количество клиентов в каждой стране,
+FROM Customers					отсортировав сначала по стране с наибольшим
+GROUP BY Country				количеством клиентов
+ORDER BY COUNT(CustomerID) DESC;
+
+
+Агрегатные функции
+SELECT						выведет 
+AVG colName					среднее значение
+FROM tableName					по полю
+
+SUM colName					выведет сумму по полю	
+
+MIN\MAX colName					MIN\MAX значение в поле
+
+COUNT colName					количество заполненых записей
+
+AVG colName					среднее значение по полю
+
+SELECT COUNT(colName)				выведет количество заполненых записей
+FROM tableName					из таблицы при выполнении условия(condition)
+WHERE condition;
+
+UCASE						все символы перевести в верхний регистр  
+LCASE						все символы перевести в нижний 
+
+
+
+
+
+
+
+
+
+					вложенные SELECT
+
+SELECT * FROM Products 					найдем все товары из таблицы Products, 
+WHERE EXISTS 						на которые есть заказы в таблице Orders:
+(SELECT * FROM Orders 
+WHERE Orders.ProductId = Products.Id)
+
+SELECT *       						найдем все товары из таблицы Products, 
+FROM Products						на которые не было заказов в таблице Orders
+WHERE Id NOT IN (SELECT ProductId FROM Orders)
+
+
+
+
+
+
+
+
+
+					JOIN
+
+Inner Join
+
+SELECT столбцы
+FROM таблица1 [INNER] JOIN таблица2		[] необязательная запись		
+ON условие1			      -устанавливает, как две таблицы будут сравниваться(обычно это ID)
+
+
+SELECT столбцы
+FROM таблица1
+[INNER] JOIN таблица2 
+ON условие1
+[INNER] JOIN таблица3			Inner Join для 3 таблиц
+ON условие2
+
+
+
+LEFT\RIGHT Join
+
+LEFT выборка будет содержать все строки из первой или левой таблицы
+RIGHT: выборка будет содержать все строки из второй или правой таблицы
+
+синтаксис
+SELECT столбцы
+FROM таблица1
+    {LEFT|RIGHT}  JOIN таблица2 ON условие1
+    {LEFT|RIGHT}  JOIN таблица3 ON условие2
+
+
+вместо ON можно использовать  USING, если поля имеют одинаковое имя в объединяемых таблицах
+
+примеры
+
+SELECT `b_name`,
+ `a_name`,
+ `g_name`
+FROM `books`
+ JOIN `m2m_books_authors` USING(`b_id`)
+ JOIN `authors` USING(`a_id`)
+ JOIN `m2m_books_genres` USING(`b_id`)
+ JOIN `genres` USING(`g_id`)
+
+
+SELECT *
+FROM Orders LEFT JOIN Customers
+on Orders.CustomerID = Customers.CustomerID;
+
+CROSS JOIN
+
+
+
+
+
+					UNION
+UNION 	вертикальное обьеденение 2 SELECT и выведет все уникальные значения(не повторяющихся)
+UNION ALL	вертикально обьеденит и выведет все значения и даже повторяющиеся
+
+SELECT_выражение1
+UNION [ALL] SELECT_выражение2
+[UNION [ALL] SELECT_выражениеN]
+
+пример
+SELECT FirstName, LastName FROM Customers
+UNION SELECT FirstName, LastName FROM Employees; 
+
+
+
+
+
+
+
+
+
+			разница между выражениями HAVING и WHERE
+
+WHERE								HAVING
+Реализовано в			Строковых операциях		Столбцовых операциях
+
+Относится к			Отдельной строке		Суммированной строке или группам
+
+Используется для	Выборки конкретных данных из		Выборки всех данных и отделения тех
+			определенных строк,согласно		из них, которые соответствуют
+			 заданным условиям 			заданным условиям
+
+Агрегатные функции	Не может содержать			Может содержать
+
+Операторы		Может использоваться с SELECT		Не может использоваться без оператора 					 UPDATE и DELETE					SELECT
+
+Выражение GROUP BY	Идет после выражения WHERE		Идет перед выражением HAVING
+
+
+
+
+
+
+
+
+
+
+
+
+					фунуция CASE
+
+проверяет истинность набора условий и в зависимости от результата проверки может возвращать тот или иной результат.
+
+синтаксис
+CASE
+    WHEN условие_1 THEN результат_1
+    WHEN условие_2 THEN результат_2
+    .................................
+    WHEN условие_N THEN условие_N
+    [ELSE альтернативный_результат]
+END
+
+пример
+SELECT ProductName, ProductCount, 
+CASE
+    WHEN ProductCount = 1 
+        THEN 'Товар заканчивается'
+    WHEN ProductCount = 2 
+        THEN 'Мало товара'
+    WHEN ProductCount = 3 
+        THEN 'Есть в наличии'
+    ELSE 'Много товара'
+END AS Category
+FROM Products;
+
+
+					Функция IF
+
+IF в зависимости от результата условного выражения возвращает одно из двух значений.
+IF(условие, значение_1, значение_2)
+Если условие, передаваемое в качестве первого параметра, верно, то возвращается первое значение, иначе возвращается второе значение. Например:
+
+SELECT ProductName, Manufacturer,
+    IF(ProductCount > 3, 'Много товара', 'Мало товара')
+FROM Products;
+
+
+
+					IFNULL функция
+
+IFNULL проверяет значение некоторого выражения. Если оно равно NULL, то функция возвращает значение, которое передается в качестве второго параметра:
+
+IFNULL(выражение, значение)
+
+SELECT FirstName, LastName,
+        IFNULL(Phone, 'не определено') AS Phone,
+        IFNULL(Email, 'неизвестно') AS Email
+FROM Clients;
+
+
+					Функция COALESCE 
+
+принимает список значений и возвращает первое из них, которое не равно NULL:
+
+синтаксис
+COALESCE(выражение_1, выражение_2, выражение_N)
+
+пример
+SELECT FirstName, LastName,
+        COALESCE(Phone, Email, 'не определено') AS Contacts
+FROM Clients;
+в данном случае возвращается телефон, если он определен. Если он не определен, то возвращается электронный адрес. Если и электронный адрес не определен, то возвращается строка "не определено
+
+
+
+
+
+
+
+
+
+
+					ПРЕДСТАВЛЕНИЯ
+
+представления в SQL являются особым объектом, который содержит данные, полученные запросом SELECT из обычных таблиц. Это виртуальная таблица, к которой можно обратиться как к обычным таблицам и получить хранимые данные. Представление в SQL может содержать в себе как данные из одной единственной таблицы, так и из нескольких таблиц.
+
+CREATE VIEW name_view			name_view — имя, которое задает пользователь при создании.
+as					После ключевого слова as идет код запроса SELECT, данные 					которого и поместятся в представление.
+
+CREATE VIEW info_order
+AS SELECT onum, amt, cname
+FROM orders, customers
+WHERE orders.cnum = customers.cnum
+
+
+
+
+
+
+
+					Триггеры в SQL
+
+Триггеры по своей сути представляют обработчики событий. Они выполняются при наступлении какого-либо простого действия в SQL. Такими действиями обычно являются: удаление, вставка и обновление данных
+Триггер позволяет автоматизировать некоторые расчетные рутинные действия
+
+CREATE TRIGGER name_trigger
+После оператора и имени триггера необходимо указать в каком случае будет срабатывать триггер. Возможно 6 вариантов:
+BEFORE INSERT
+BEFORE UPDATE
+BEFORE DELETE
+AFTER INSERT
+AFTER UPDATE
+AFTER DELETE
+
+пример
+CREATE TRIGGER Before_Update_amt
+BEFORE UPDATE ON orders
+FOR EACH ROW
+BEGIN
+    SET NEW.amt = NEW.amt * 1.2;
+END 
+создадим триггер. Он автоматически будет увеличивать новую цену на 20%.
+
+Триггер на взаимодействие таблиц.После удаления продавца триггер в SQL удаляет все записи из таблицы
+
+
+
+
+
+
+
+
+					Логические операторы
+
+
+
+N		Оператор			Описание
+
+1		ALL		Сравнивает все значения
+2		AND		Объединяет условия (все условия должны совпадать)
+3		ANY		Сравнивает одно значение с другим, если последнее совпадает с условием
+4		BETWEEN		Проверяет вхождение значения в диапазон от минимального до максимального
+5		EXISTS		Определяет наличие строки, соответствующей определенному критерию
+6		IN		Выполняет поиск значения в списке значений
+7		LIKE		Сравнивает значение с похожими с помощью операторов подстановки
+8		NOT		Инвертирует (меняет на противоположное) смысл других логических 				операторов,например, NOT EXISTS, NOT IN и т.д.
+9		OR		Комбинирует условия (одно из условий должно совпадать)
+10		IS NULL		Определяет, является ли значение нулевым
+11		UNIQUE		Определяет уникальность строки
+
+
+					
+
+
+
+
+
+
+
+
+					Прочие примеры из практики
+
+SELECT DISTINCT name  					выведет из таблцы Passenger, пассажира с самым  
+FROM Passenger							длинным именем
+ORDER BY (SELECT LENGTH(Passenger.name)) DESC 
+LIMIT 1;
+
+SELECT member_name 						выведет самого старшего члена семьи
+FROM FamilyMembers
+ORDER BY birthday  
+LIMIT 1;
+
+SELECT  Goods.good_name, Payments.unit_price 			найдет самый дорогой 
+FROM GoodTypes JOIN Goods 					деликатес (delicacies)
+    ON GoodTypes.good_type_id = Goods.type 			и выведет его стоимость
+    JOIN Payments ON Goods.good_id = Payments.good 
+WHERE GoodTypes.good_type_name = 'delicacies'
+ORDER BY unit_price DESC 
+LIMIT 1;
+
+SELECT email, COUNT(email)				найдет дубли в поле email
+FROM customers
+GROUP BY email
+HAVING COUNT(email) > 1;
+
+SELECT * FROM sample WHERE id % 2 != 0;			выбрать записи с нечётными Id
