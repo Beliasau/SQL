@@ -99,7 +99,7 @@ VALUES (val1, val2, ...valN);
 
 ALTER TABLE tableName RENAME TO newTableName; 		переименование таблицы
 
-ALTER TABLE tableName ADD|DROP|MODIFY colName [datatype]; добавление/удаление/модификация 									колонок
+ALTER TABLE tableName ADD|DROP|MODIFY colName [datatype]; добавление/удаление/модификация	колонок
 
 ALTER TABLE tableName ADD colName [datatype]	добавление в таблицу колонки после указанной
 AFTER|First|SECOND colName			либо первой|второй	
@@ -414,14 +414,14 @@ UNION SELECT FirstName, LastName FROM Employees;
 
 			разница между выражениями HAVING и WHERE
 
-WHERE								HAVING
+							WHERE						HAVING
 Реализовано в			Строковых операциях		Столбцовых операциях
 
 Относится к			Отдельной строке		Суммированной строке или группам
 
 Используется для	Выборки конкретных данных из		Выборки всех данных и отделения тех
-			определенных строк,согласно		из них, которые соответствуют
-			 заданным условиям 			заданным условиям
+			определенных строк,согласно				из них, которые соответствуют
+			 заданным условиям 						заданным условиям
 
 Агрегатные функции	Не может содержать			Может содержать
 
