@@ -714,7 +714,7 @@ INDEX
 
 
 
-19. отличия DROP DELETE TRANCATE   (DROP — удаляет, DELETE/TRUNCATE — очищает.)
+19. отличия DROP DELETE TRANCATE   (DROP — удаляет, DELETE/TRUNCATE — очищает строки.)
 
 DROP удаляет таблицу из базы данных целиком, вместе со структурой. То есть после выполнения такой команды обратитья к удаленной таблице, например с помощью SELECT, будет уже нельзя.
 
@@ -1246,17 +1246,24 @@ ALTER TABLE products
 ADD FOREIGN KEY (product_group_id) REFERENCES product_groups (id);
 
 переименовать колонку
-ALTER TABLE имя_таблицы RENAME COLUMN имя_колонки TO новое_имя_колонки
+ALTER TABLE имя_таблицы 
+RENAME COLUMN имя_колонки TO новое_имя_колонки
 
 удалить колонку 
-ALTER TABLE имя_таблицы DROP COLUMN имя_колонки ;
+ALTER TABLE имя_таблицы 
+DROP COLUMN имя_колонки ;
 
 добавить колонку
-ALTER TABLE имя_таблицы ADD COLUMN имя_колонки тип_данных_колонки ;
+ALTER TABLE имя_таблицы 
+ADD COLUMN имя_колонки тип_данных_колонки ;
 
 переименовать таблицу
-ALTER TABLE имя_таблицы RENAME TO новое_имя_таблицы
+ALTER TABLE имя_таблицы 
+RENAME TO новое_имя_таблицы
 
+Поменять тип столба role_name с int на varchar(30)
+alter table roles1
+alter column role_name type varchar(30);
 
 
 insert INTO ...		добавить/вставить данные в таблицу (внести данные в строку)
