@@ -1249,6 +1249,10 @@ ADD FOREIGN KEY (product_group_id) REFERENCES product_groups (id);
 ALTER TABLE имя_таблицы 
 RENAME COLUMN имя_колонки TO новое_имя_колонки
 
+переименовать таблицу
+ALTER TABLE имя_таблицы 
+RENAME TO новое_имя_таблицы
+
 удалить колонку 
 ALTER TABLE имя_таблицы 
 DROP COLUMN имя_колонки ;
@@ -1257,13 +1261,14 @@ DROP COLUMN имя_колонки ;
 ALTER TABLE имя_таблицы 
 ADD COLUMN имя_колонки тип_данных_колонки ;
 
-переименовать таблицу
-ALTER TABLE имя_таблицы 
-RENAME TO новое_имя_таблицы
-
 Поменять тип столба role_name с int на varchar(30)
 alter table roles1
 alter column role_name type varchar(30);
+
+Изменение ограничений столбца
+ALTER TABLE Customers 
+ALTER COLUMN FirstName 
+SET/DROP NOT NULL;
 
 
 insert INTO ...		добавить/вставить данные в таблицу (внести данные в строку)
