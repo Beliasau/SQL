@@ -735,7 +735,9 @@ DROP TABLE tableName;				удаление таблицы
 DROP DATABASE [IF EXISTS] dbName;		удаление БД
 
 
+
 TRUNCATE TABLE tableName;			очистка таблицы
+
 
 
 ALTER TABLE tableName				удаление колонки из таблицы
@@ -745,8 +747,12 @@ ALTER TABLE tableName				удаление индекса
 DROP INDEX indexName;
 
 
+
 DELETE FROM tableName				удаление определенной записи
 WHERE имя_поля=значение;
+
+delete from roles8					Удалить строки в таблице
+where id > 4;
 
 DELETE FROM tableName;				удалит все значения из таблицы
 
@@ -1281,7 +1287,9 @@ set столбец = значение, столбец = значение ...
 (where)
 
 
-
+Удалить строки в таблице
+delete from roles8
+where id > 4;
 
 
 
