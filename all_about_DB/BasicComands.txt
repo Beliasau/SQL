@@ -145,7 +145,6 @@ DROP TABLE tableName;				удаление таблицы
 
 DROP DATABASE [IF EXISTS] dbName;		удаление БД
 
-
 TRUNCATE TABLE tableName;			очистка таблицы
 
 ALTER TABLE tableName				удаление колонки из таблицы
